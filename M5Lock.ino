@@ -6,26 +6,26 @@
 #include <M5Stack.h>
 #include <ESP32Servo.h>
 
-char *ssid = "YOUR SSID";
-char *password = "YOUR PASS";
+char *ssid = "<YOUR_SSID>";
+char *password = "<YOUR_WIFI_PASSWORD>";
 
-const char *endpoint = "YOUR ENDPOINT";
+const char *endpoint = "<AWS_IOT_ENDPOINT>";
 // Example: xxxxxxxxxxxxxx.iot.ap-northeast-1.amazonaws.com
 const int port = 8883;
-
-char *pubTopic = "$aws/things/$YOURTHINGS$/shadow/update";
-char *subTopic = "$aws/things/$YOURTHINGS$/shadow/update/delta";
+char *pubTopic = "$aws/things/<DEVICE_NAME>/shadow/update";
+char *subTopic = "$aws/things/<DEVICE_NAME>/shadow/update/delta";
 
 const char* rootCA = "-----BEGIN CERTIFICATE-----\n" \
-                     "-----END CERTIFICATE-----\n";
+"......" \
+"-----END CERTIFICATE-----\n";
 
 const char* certificate = "-----BEGIN CERTIFICATE-----\n" \
-                          "-----END CERTIFICATE-----\n";
-
+"......" \
+"-----END CERTIFICATE-----\n";
 
 const char* privateKey = "-----BEGIN RSA PRIVATE KEY-----\n" \
-                         "-----END RSA PRIVATE KEY-----\n";
-
+"......" \
+"-----END RSA PRIVATE KEY-----\n";
 long messageSentAt = 0;
 char pubMessage[128];
 
