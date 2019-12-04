@@ -26,6 +26,7 @@ const char* certificate = "-----BEGIN CERTIFICATE-----\n" \
 const char* privateKey = "-----BEGIN RSA PRIVATE KEY-----\n" \
 "......" \
 "-----END RSA PRIVATE KEY-----\n";
+
 long messageSentAt = 0;
 char pubMessage[128];
 
@@ -37,7 +38,7 @@ int maxUs = 2400;
 
 int pos = 0;      // position in degrees
 bool lock_flag = true;  //true =  close
-int sleeptime = 10; //second
+int Regular_time = 60; //何秒ごとにPublishするか
 
 Servo servo1; // create four servo objects
 WiFiClientSecure httpsClient;
@@ -175,7 +176,7 @@ void setup() {
   M5.Lcd.progressBar(40, 150, 240, 30, 100);
   delay(500);
 
-  door_close(); //初期化
+  door_close();
 }
 
 void connectAWSIoT() {
@@ -249,7 +250,7 @@ void mqttLoop() {
     }
   }
   long now = millis();
-  if (now - messageSentAt > 600000) {
+  if (now - messageSentAt > Regular_time * 1000) {
     messageSentAt = now;
     send_status();
   }
@@ -257,25 +258,5 @@ void mqttLoop() {
 
 void loop() {
   M5.update();
-  //mqttLoop();
-  if (!mqttClient.connected()) {
-    connectAWSIoT();
-    delay(500);
-  } else {
-    mqttClient.loop();
-  }
-
-  if (M5.BtnA.wasReleased() || M5.BtnB.wasReleased() || M5.BtnC.wasReleased()) {
-    if (lock_flag) {
-      door_open();
-    }
-    else {
-      door_close();
-    }
-  }
-  long now = millis();
-  if (now - messageSentAt > 600000) {
-    messageSentAt = now;
-    send_status();
-  }
+  mqttLoop();
 }
